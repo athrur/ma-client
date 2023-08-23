@@ -56,7 +56,9 @@ function App() {
         )}
       </SizeMe>
     </div>
-    <div className="hidden sm:flex sm:flex-none sm:w-1/4 sm:bg-black sm:border-l-2 sm:border-bborange sm:px-1">
+    {
+      window.innerWidth > 640 &&
+    <div className="flex lex-none w-1/3 md:1-1/4 bg-black border-l-2 border-bborange px-1">
       <div className="">
         <div className="grid grid-cols-2 my-5">
           <Select>
@@ -115,7 +117,7 @@ function App() {
         }
 
       </div>
-    </div>
+    </div>}
   </div>
 
   );
