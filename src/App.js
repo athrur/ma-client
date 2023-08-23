@@ -14,7 +14,7 @@ function App() {
   const [acquisitions, setAcquisitions] = useState([]);
   
   useEffect(() => {
-    fetch('http://api.arthurr.co.uk/acquisitions').then(res => res.json()).then(data => {
+    fetch('https://ma-arthur-api-006042b68258.herokuapp.com/acquisitions').then(res => res.json()).then(data => {
       setAcquirers(data['acquirers']);
       setAcquired(data['acquired']);
       setAcquisitions(data['acquisitions']);
