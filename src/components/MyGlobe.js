@@ -1,83 +1,119 @@
-import React, { useState, useEffect } from 'react';
-import { SizeMe } from 'react-sizeme';
+import React, { useState, useEffect, useRef } from 'react';
 import Globe from 'react-globe.gl';
 
 function MyGlobe(props) {
   const {
     width,
-    acquiredData,
     acquisitionsData,
+    acquirerData,
+    size,
+    sharedState,
+    setSharedState,
   } = props;
 
-  const [acquirers, setAcquirers] = useState([]);
-  const [acquired, setAcquired] = useState([]);
+
+  const [acquirer, setAcquirer] = useState([]);
   const [acquisitions, setAcquisitions] = useState([]);
 
+  const globe = useRef();
+
   const randomColor = () => {
-    // return either "red", "grey", or "orange"
-    const colors = ["red", "grey", "orange"];
+    // return either 'red', 'green', 'orange', or 'grey'
+    const colors = ['#ff433d', '#0068ff', '#fb8b1e', 'grey'];
     return colors[Math.floor(Math.random() * colors.length)];
   };
-  
+
   const dealValue = (input) => {
-    // deal value is a string, if it's a parsable number return that if not return 1
-    if (parseInt(input)) {
-      return parseInt(input);
+    if (input[0] === '$') {
+      // it is in form $500,000,000 with an unknown number of commas
+      // remove the $ and commas
+      input = input.slice(1).replace(/,/g, '');
+      input = parseInt(input);
+      return input / 5000000000;
     }
-    return 0.8;
-    
+    return 1;
+
   }
 
   useEffect(() => {
-    // Assuming the acquiredData and acquisitionsData are passed as props
-    if (!acquiredData || !acquisitionsData) return;
-    setAcquirers(acquiredData);
-    setAcquired(acquiredData);
+    if (!acquirerData || !acquisitionsData) return;
+
+    if (globe.current) {
+      globe.current.pointOfView({ lat: acquirerData.latitude * 0.8, lng: acquirerData.longitude * 0.7, altitude: 2.5 });
+    }
+    // set current data to none, wait 2 seconds
+    setAcquirer(acquirerData);
     setAcquisitions(acquisitionsData);
-    console.log(acquisitionsData)
-  }, [acquiredData, acquisitionsData]);
+
+
+
+    // print how manby acquisitions
+
+    // remove all points from the globe
+    // globe.current.pointOfView({ altitude: 3.5 });
+
+
+  }, [acquirerData, acquisitionsData]);
+
+  const handlePointClick = (point) => {
+    setSharedState(point);
+  }
 
   return (
-    <SizeMe>
-      {({ size }) => (
-        <>
-          <Globe
-            width={width || size.width}
-            globeImageUrl="/earth-night.jpg"
-            backgroundImageUrl="/night-sky.png"
-            pointsData={acquired}
-            pointLat={d => d.latitude}
-            pointLng={d => d.longitude}
-            pointAltitude={0}
-            pointColor={() => randomColor()}
-            pointRadius={d => dealValue(d.deal_value)}
-            arcsData={acquisitions}
-            arcLabel={d => `${d.news_title ? d.news_title : d.purchasing_company.name + "acquired" + d.purchased_company.name}`}
-            arcStartLat={d => d.purchasing_company.latitude}
-            arcStartLng={d => d.purchasing_company.longitude}
-            arcEndLat={d => d.purchased_company.latitude}
-            arcEndLng={d => d.purchased_company.longitude}
-            arcStroke={0.5}
-            arcColor={() => 'red'}
-            arcDashAnimateTime={5000}
-            arcDashGap={0.3}
-            arcDashInitialGap={() => Math.random() * 0.5}
-            // arcsTransitionDuration={0}
-            
-            // ringsData={acquisitions}
-            // ringLat={d => d.purchased_company.latitude}
-            // ringLng={d => d.purchased_company.longitude}
-            // ringColor={() => 'red'}
-            // ringMaxRadius={d => dealValue(d.deal_value) * 5}
-            // ringPropagationSpeed={0.1}
-            // ringTransitionDuration={0}
-            // ringRepeatPeriod={0}
-            
-            
-          />
-        </>
-      )}
-    </SizeMe>
+
+    <Globe
+      ref={globe}
+      width={width || size.width}
+      globeImageUrl="/earth-night.jpg"
+      backgroundImageUrl="/night-sky.png"
+      pointsData={acquisitions}
+      pointLat={d => d.purchased_company.latitude}
+      pointLng={d => d.purchased_company.longitude}
+      pointAltitude={() => Math.random() / 1000}
+      pointsMerge={false}
+      pointColor={() => randomColor()}
+      pointLabel={d => `${d.purchased_company.name} acquired by ${acquirer.name}`}
+      pointRadius={d => parseInt(dealValue(d.deal_value))}
+      // onPointClick={d => handlePointClick(d)}
+
+
+      arcsData={acquisitions}
+      arcLabel={d => `${d.news_title ? d.news_title : acquirer.name + "acquired" + d.purchased_company.name}`}
+      arcStartLat={d => acquirer.latitude}
+      arcStartLng={d => acquirer.longitude}
+      arcEndLat={d => d.purchased_company.latitude}
+      arcEndLng={d => d.purchased_company.longitude}
+      arcDashAnimateTime={5000}
+      arcDashGap={0.3}
+      arcDashInitialGap={() => Math.random()}
+      arcStroke={0.2}
+      arcColor={d => '#ff433d'}
+      // onArcClick={d => handlePointClick(d)}
+
+    // customLayerData={acquisitions}
+    // customThreeObject={""}
+
+
+
+    // ringsData={[acquirer]}
+    // ringLat={d => d.latitude}
+    // ringLng={d => d.longitude}
+    // ringColor={() => 'green'}
+    // ringRadius={d => 10}
+    // ringMaxRadius={d => 4}
+
+
+    // arcsTransitionDuration={0}
+
+    // ringsData={acquisitions}
+    // ringLat={d => d.purchased_company.latitude}
+    // ringLng={d => d.purchased_company.longitude}
+    // ringColor={() => 'red'}
+    // ringMaxRadius={d => dealValue(d.deal_value) * 5}
+    // ringPropagationSpeed={0.1}
+    // ringTransitionDuration={0}
+    // ringRepeatPeriod={0}
+    />
   );
 }
 
