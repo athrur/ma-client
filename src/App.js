@@ -39,7 +39,7 @@ function App() {
   }, []);
 
   return (<div className='flex flex-row'>
-    <div className="bg-black w-2/3 flex-1">
+    <div className="bg-black flex-1">
 
       <SizeMe>
         {({ size }) => (
@@ -56,7 +56,7 @@ function App() {
         )}
       </SizeMe>
     </div>
-    <div className="hidden md:block md:flex-none md:w-1/3 lg:w-1/4 bg-black border-l-2 border-bborange px-1">
+    <div className="hidden md:flex md:flex-none md:w-1/4 md:bg-black md:border-l-2 md:border-bborange md:px-1">
       <div className="">
         <div className="grid grid-cols-2 my-5">
           <Select>
