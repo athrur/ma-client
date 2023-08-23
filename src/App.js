@@ -56,7 +56,7 @@ function App() {
         )}
       </SizeMe>
     </div>
-    <div className="flex-none w-1/2 md:w-1/3 lg:w-1/4 bg-black border-l-2 border-bborange px-1">
+    <div className="hidden md:block md:flex-none md:w-1/3 lg:w-1/4 bg-black border-l-2 border-bborange px-1">
       <div className="">
         <div className="grid grid-cols-2 my-5">
           <Select>
