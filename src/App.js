@@ -59,6 +59,9 @@ function App() {
     
     <div className="flex flex-none w-1/3 md:1-1/4 bg-black border-l-2 border-bborange px-1">
       <div className="">
+        <p className='text-bborange p-5'>
+            <h1 className='text-xl font-bold'>https://arthur-ma.vercel.app</h1>
+          </p>
         <div className="grid grid-cols-2 my-5">
           <Select>
             <option value="Technology">{"> "} Technology</option>
