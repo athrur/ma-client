@@ -56,15 +56,14 @@ function App() {
         )}
       </SizeMe>
     </div>
-    {
-      window.innerWidth > 640 &&
-    <div className="flex lex-none w-1/3 md:1-1/4 bg-black border-l-2 border-bborange px-1">
+    
+    <div className="flex flex-none w-1/3 md:1-1/4 bg-black border-l-2 border-bborange px-1">
       <div className="">
         <div className="grid grid-cols-2 my-5">
           <Select>
             <option value="Technology">{"> "} Technology</option>
           </Select>
-          <select defaultValue={"Microsoft"} onChange={handleCompanyChange} id="ticket" class="px-3 appearance-none rounded-none bg-bborange text-gray-700 font-bold border-2 border-black py-5 w-full text-center align-middle content-center">
+          <select defaultValue={"Apple"} onChange={handleCompanyChange} id="ticket" class="px-3 appearance-none rounded-none bg-bborange text-gray-700 font-bold border-2 border-black py-5 w-full text-center align-middle content-center">
             <option value="21">{"> "} Microsoft</option>
             <option value="15">{"> "} Google</option>
             <option value="17">{"> "} IBM</option>
@@ -117,7 +116,7 @@ function App() {
         }
 
       </div>
-    </div>}
+    </div>
   </div>
 
   );
